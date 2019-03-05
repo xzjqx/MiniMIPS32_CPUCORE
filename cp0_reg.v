@@ -104,7 +104,25 @@ module cp0_reg(
 				timer_int <= `TRUE_V;
 			end
 /************************UPDATE--compare与count相等时产生时钟中断*******************************/
-
+			if (we == `WRITE_ENABLE) begin
+				case(waddr)
+				 	`CP0_BADVADDR: badvaddr     <= wdata;
+/************************UPDATE--添加两个CP0寄存器*******************************/
+                    `CP0_COUNT:    count        <= wdata;
+                    `CP0_COMPARE:  begin
+                                   compare      <= wdata;
+                                   timer_int    <= `FALSE_V; end
+/************************UPDATE--添加两个CP0寄存器*******************************/
+/************************UPDATE--修改以符合CP0寄存器部分位只读的情况*******************************/
+					`CP0_STATUS:   begin // status 寄存器只有15..8和1..0可读可写，其他位只读
+								   status[15:8] <= wdata[15:8]; 
+							       status[ 1:0] <= wdata[ 1:0]; end
+					`CP0_CAUSE:    cause[9:8]   <= wdata[9:8];// cause 寄存器只有9..8（软中断标识位）可读可写，exccode位在处理异常时修改，其他位只读
+/************************UPDATE--修改以符合CP0寄存器部分位只读的情况*******************************/
+                    `CP0_EPC:      epc      <= wdata;
+				 	default : compare	<= compare; // do nothing
+				endcase
+			end
 			case (exccode_i)
 				`EXC_NONE:       // 无异常发生时，判断是否为写寄存器指令，写入数据
 					if (we == `WRITE_ENABLE) begin
