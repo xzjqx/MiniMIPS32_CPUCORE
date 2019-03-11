@@ -21,10 +21,7 @@ module MiniMIPS32(
     input  wire                  mem_data_ok,
 /************************UPDATE--添加取指令和取数据的OK信号*******************************/
 
-    input  wire [`CP0_INT_BUS  ] int_i,
-/************************UPDATE--添加时钟中断信号*******************************/
-    output wire                  timer_int
-/************************UPDATE--添加时钟中断信号*******************************/
+    input  wire [`CP0_INT_BUS  ] int_i
     );
 
     wire [`WORD_BUS      ] pc;
@@ -127,28 +124,28 @@ module MiniMIPS32(
     wire [`REG_ADDR_BUS  ] id_cp0_addr_o;
     wire [`REG_ADDR_BUS  ] exe_cp0_addr_i;
     wire                   cp0_re;
-	wire [`REG_ADDR_BUS  ] cp0_raddr;
+    wire [`REG_ADDR_BUS  ] cp0_raddr;
     wire [`REG_BUS       ] cp0_data_o;
 
-	wire                   exe_cp0_we_o;
-	wire [`REG_ADDR_BUS  ] exe_cp0_waddr_o;
+    wire                   exe_cp0_we_o;
+    wire [`REG_ADDR_BUS  ] exe_cp0_waddr_o;
     wire [`REG_BUS       ] exe_cp0_wdata_o;
     wire                   mem_cp0_we_i;
-	wire [`REG_ADDR_BUS  ] mem_cp0_waddr_i;
+    wire [`REG_ADDR_BUS  ] mem_cp0_waddr_i;
     wire [`REG_BUS       ] mem_cp0_wdata_i;
     wire                   mem_cp0_we_o;
-	wire [`REG_ADDR_BUS  ] mem_cp0_waddr_o;
+    wire [`REG_ADDR_BUS  ] mem_cp0_waddr_o;
     wire [`REG_BUS       ] mem_cp0_wdata_o;
     wire                   wb_cp0_we_i;
-	wire [`REG_ADDR_BUS  ] wb_cp0_waddr_i;
+    wire [`REG_ADDR_BUS  ] wb_cp0_waddr_i;
     wire [`REG_BUS       ] wb_cp0_wdata_i;
     wire                   cp0_we;
-	wire [`REG_ADDR_BUS  ] cp0_waddr;
+    wire [`REG_ADDR_BUS  ] cp0_waddr;
     wire [`REG_BUS       ] cp0_data_i;
-	
+
     wire                   cp0_in_delay_i;
-	wire [`REG_BUS 	     ] status_o;
-	wire [`REG_BUS 	     ] cause_o;
+    wire [`REG_BUS 	     ] status_o;
+    wire [`REG_BUS 	     ] cause_o;
 /************************MFC0,MTC0 end*********************************/
 /************************异常处理 begin*******************************/
     wire [`WORD_BUS      ] id_pc_o;
@@ -407,10 +404,7 @@ module MiniMIPS32(
         .cause_o(cause_o), 
         .re(cp0_re),
         .pc_i(cp0_pc_i),
-        .in_delay_i(cp0_in_delay_i),
-/************************UPDATE--添加时钟中断信号*******************************/
-        .timer_int(timer_int)
-/************************UPDATE--添加时钟中断信号*******************************/
+        .in_delay_i(cp0_in_delay_i)
     );
 
 /************************UPDATE--修改使数据不再直接传给WB阶段*******************************/

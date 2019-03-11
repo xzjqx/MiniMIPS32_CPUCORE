@@ -47,7 +47,9 @@ module MiniMIPS32_SYS(
 	input  wire [1 :0]  m0_rresp  ,
 	input  wire         m0_rlast  ,
 	input  wire         m0_rvalid ,
-	output wire         m0_rready
+	output wire         m0_rready ,
+    
+    input  wire         timer_int
 /************************SoC添加 end*********************************/
     );
 
@@ -66,7 +68,6 @@ module MiniMIPS32_SYS(
 
     // 将时钟中断传入CPU核
     wire [`CP0_INT_BUS  ] int_i;
-    wire timer_int;
     assign int_i = {5'b0, timer_int};
 
     MiniMIPS32 minimips32 (
@@ -82,8 +83,7 @@ module MiniMIPS32_SYS(
         .dm(dout),
         .if_data_ok(if_data_ok),
         .mem_data_ok(mem_hit),
-        .int_i(int_i),
-        .timer_int(timer_int)
+        .int_i(int_i)
     );
     
 /************************SoC修改 begin*******************************/
